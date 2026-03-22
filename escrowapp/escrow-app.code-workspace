@@ -1,0 +1,39 @@
+{
+  "folders": [
+    {
+      "name": "📁 EscrowPay (Root)",
+      "path": "."
+    },
+    {
+      "name": "🐍 Backend (FastAPI)",
+      "path": "backend"
+    },
+    {
+      "name": "🌐 Frontend",
+      "path": "frontend"
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder:🐍 Backend (FastAPI)}/venv/bin/python",
+    "editor.rulers": [88],
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true
+    }
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "▶ Run Backend",
+        "type": "python",
+        "request": "launch",
+        "module": "uvicorn",
+        "args": ["main:app", "--reload", "--port", "8000"],
+        "cwd": "${workspaceFolder:🐍 Backend (FastAPI)}",
+        "envFile": "${workspaceFolder:🐍 Backend (FastAPI)}/.env",
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+}

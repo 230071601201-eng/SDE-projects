@@ -1,0 +1,145 @@
+### EscrowPay — VS Code REST Client
+### Install extension: humao.rest-client
+### Set @token below after logging in
+
+@base = http://localhost:8000
+@token = PASTE_YOUR_TOKEN_HERE
+@order_id = PASTE_ORDER_ID_HERE
+
+### ─── AUTH ────────────────────────────────────────────────
+
+### Signup - Customer
+POST {{base}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Alice Customer",
+  "email": "alice@example.com",
+  "password": "secret123",
+  "role": "customer"
+}
+
+###
+
+### Signup - Seller
+POST {{base}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Bob Seller",
+  "email": "bob@example.com",
+  "password": "secret123",
+  "role": "seller"
+}
+
+###
+
+### Login (copy token from response → paste into @token above)
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "alice@example.com",
+  "password": "secret123"
+}
+
+###
+
+### Get Current User
+GET {{base}}/auth/me
+Authorization: Bearer {{token}}
+
+###
+
+### List All Sellers
+GET {{base}}/auth/sellers
+Authorization: Bearer {{token}}
+
+
+### ─── ORDERS ────────────────────────────────────────────────
+
+### Create Order (use a seller id from /auth/sellers)
+POST {{base}}/orders
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "seller_id": "SELLER_UUID_HERE",
+  "amount": 1500.00,
+  "description": "Electronics delivery"
+}
+
+###
+
+### List My Orders
+GET {{base}}/orders
+Authorization: Bearer {{token}}
+
+###
+
+### Get Order by ID
+GET {{base}}/orders/{{order_id}}
+Authorization: Bearer {{token}}
+
+###
+
+### Mark Delivered (seller token required)
+POST {{base}}/orders/{{order_id}}/deliver
+Authorization: Bearer {{token}}
+
+###
+
+### Dashboard Analytics
+GET {{base}}/orders/analytics
+Authorization: Bearer {{token}}
+
+
+### ─── ESCROW ────────────────────────────────────────────────
+
+### Deposit to Escrow
+POST {{base}}/escrow/deposit
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order_id": "{{order_id}}"
+}
+
+###
+
+### Release Payment (confirm delivery)
+POST {{base}}/escrow/release
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order_id": "{{order_id}}"
+}
+
+###
+
+### Raise Dispute
+POST {{base}}/escrow/dispute
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order_id": "{{order_id}}"
+}
+
+###
+
+### Request Refund
+POST {{base}}/escrow/refund
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "order_id": "{{order_id}}"
+}
+
+###
+
+### Transaction History
+GET {{base}}/escrow/transactions/{{order_id}}
+Authorization: Bearer {{token}}

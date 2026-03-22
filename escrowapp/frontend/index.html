@@ -1,0 +1,2569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0" />
+  <title>Vaultly — Secure Payments</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+      --p: #16a34a;
+      --pd: #15803d;
+      --pl: #f0fdf4;
+      --b: #1d4ed8;
+      --bd: #1e40af;
+      --bl: #eff6ff;
+      --t: #111827;
+      --t2: #6b7280;
+      --t3: #9ca3af;
+      --bg: #f9fafb;
+      --s: #ffffff;
+      --s2: #f3f4f6;
+      --bd1: #e5e7eb;
+      --bd2: #d1d5db;
+      --warn: #d97706;
+      --wl: #fffbeb;
+      --err: #dc2626;
+      --el: #fef2f2;
+      --sh: 0 1px 3px rgba(0, 0, 0, 0.07), 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--t);
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+    /* ─── SPLASH ─── */
+    .splash {
+      min-height: 100vh;
+      background: var(--p);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 32px;
+      text-align: center;
+    }
+
+    .splash-mark {
+      width: 64px;
+      height: 64px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .splash-wordmark {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .splash-wordmark b {
+      color: #bbf7d0;
+      font-weight: 700;
+    }
+
+    .splash-tag {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.88rem;
+      line-height: 1.6;
+      margin-bottom: 56px;
+      max-width: 240px;
+    }
+
+    .sb {
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: all 0.18s;
+    }
+
+    .sb-primary {
+      background: #fff;
+      color: var(--p);
+    }
+
+    .sb-primary:hover {
+      background: #f0fdf4;
+    }
+
+    .sb-ghost {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .sb-ghost:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .splash-note {
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.72rem;
+      margin-top: 28px;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── AUTH ─── */
+    .auth-page {
+      min-height: 100vh;
+      background: var(--s);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auth-head {
+      background: var(--p);
+      padding: 28px 24px 48px;
+    }
+
+    .auth-back {
+      width: 34px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .auth-head-brand {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .auth-head h2 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.3px;
+      margin-bottom: 4px;
+    }
+
+    .auth-head p {
+      font-size: 0.83rem;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .auth-body {
+      flex: 1;
+      padding: 24px;
+      margin-top: -16px;
+      background: var(--s);
+      border-radius: 16px 16px 0 0;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--t2);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--bd1);
+      border-radius: 9px;
+      font-size: 0.92rem;
+      color: var(--t);
+      background: var(--s);
+      outline: none;
+      transition: border-color 0.18s, box-shadow 0.18s;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--p);
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.12);
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .rc {
+      border: 1.5px solid var(--bd1);
+      border-radius: 10px;
+      padding: 14px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.18s;
+      background: var(--s2);
+    }
+
+    .rc.active {
+      border-color: var(--p);
+      background: var(--pl);
+    }
+
+    .rc-ico {
+      width: 38px;
+      height: 38px;
+      margin: 0 auto 10px;
+      background: var(--s);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--bd1);
+    }
+
+    .rc-ico svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--p);
+    }
+
+    .rc-name {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--t);
+    }
+
+    .rc-hint {
+      font-size: 0.7rem;
+      color: var(--t2);
+      margin-top: 2px;
+    }
+
+    .pbtn {
+      width: 100%;
+      padding: 14px;
+      background: var(--p);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .pbtn:hover {
+      background: var(--pd);
+    }
+
+    .pbtn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .pbtn.blue {
+      background: var(--b);
+    }
+
+    .pbtn.blue:hover {
+      background: var(--bd);
+    }
+
+    .auth-foot {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 0.84rem;
+      color: var(--t2);
+    }
+
+    .auth-foot a {
+      color: var(--p);
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .err {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 14px;
+      background: var(--el);
+      border: 1px solid #fca5a5;
+      border-radius: 9px;
+      font-size: 0.82rem;
+      color: var(--err);
+      margin-bottom: 14px;
+    }
+
+    .err.show {
+      display: flex;
+    }
+
+    .err svg {
+      flex-shrink: 0;
+    }
+
+    /* ─── HOME ─── */
+    .home-page {
+      min-height: 100vh;
+      background: var(--bg);
+      padding-bottom: 88px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--s);
+      border-bottom: 1px solid var(--bd1);
+    }
+
+    .wordmark {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--t);
+      letter-spacing: -0.3px;
+    }
+
+    .wordmark b {
+      color: var(--p);
+      font-weight: 700;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--s2);
+      border: 1px solid var(--bd1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .icon-circle svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--t2);
+    }
+
+    .avatar-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--pl);
+      border: 1.5px solid var(--p);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--p);
+      cursor: pointer;
+    }
+
+    /* user hero */
+    .user-hero {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 20px 20px 16px;
+      background: var(--s);
+    }
+
+    .user-hero-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--pl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--p);
+      flex-shrink: 0;
+      border: 1.5px solid rgba(22, 163, 74, 0.2);
+    }
+
+    .user-hero-greet {
+      font-size: 0.78rem;
+      color: var(--t2);
+      margin-bottom: 2px;
+    }
+
+    .user-hero-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--t);
+      letter-spacing: -0.2px;
+    }
+
+    .role-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--pl);
+      border: 1px solid rgba(22, 163, 74, 0.25);
+      border-radius: 20px;
+      padding: 3px 9px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--p);
+      margin-top: 5px;
+    }
+
+    .role-tag svg {
+      width: 10px;
+      height: 10px;
+      stroke: var(--p);
+    }
+
+    /* stats card */
+    .stats-card {
+      margin: 12px 16px;
+      background: var(--p);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stats-card::before {
+      content: '';
+      position: absolute;
+      right: -30px;
+      top: -30px;
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .stats-card::after {
+      content: '';
+      position: absolute;
+      right: 40px;
+      bottom: -40px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .sc-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .sc-val {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+
+    .sc-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sc-chip {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 8px;
+    }
+
+    .sc-chip-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.55);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .sc-chip-val {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .sc-chip-val.esc {
+      font-size: 0.85rem;
+    }
+
+    /* quick actions */
+    .qa-section {
+      padding: 20px 16px 0;
+    }
+
+    .qa-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--t3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .qa-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .qa-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 4px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.15s;
+    }
+
+    .qa-btn:hover {
+      background: var(--s2);
+    }
+
+    .qa-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: var(--s);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--sh);
+      border: 1px solid var(--bd1);
+    }
+
+    .qa-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .qa-name {
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--t);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* recent */
+    .recent-section {
+      padding: 20px 16px 0;
+    }
+
+    .sec-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .sec-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--t);
+    }
+
+    .sec-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--p);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .tx-card {
+      background: var(--s);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--sh);
+      border: 1px solid var(--bd1);
+    }
+
+    .tx-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--bd1);
+      transition: background 0.14s;
+      cursor: pointer;
+    }
+
+    .tx-row:last-child {
+      border-bottom: none;
+    }
+
+    .tx-row:hover {
+      background: var(--s2);
+    }
+
+    .tx-ico {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--bd1);
+    }
+
+    .tx-ico svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .tx-mid {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .tx-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--t);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tx-desc {
+      font-size: 0.73rem;
+      color: var(--t2);
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .tx-end {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .tx-amt {
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .tx-amt.out {
+      color: var(--err);
+    }
+
+    .tx-amt.lock {
+      color: var(--warn);
+    }
+
+    .tx-amt.inp {
+      color: var(--p);
+    }
+
+    .tx-pill {
+      margin-top: 2px;
+    }
+
+    /* pills */
+    .pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .pp {
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    .pi {
+      background: #eff6ff;
+      color: #1e40af;
+      border: 1px solid #bfdbfe;
+    }
+
+    .pd {
+      background: #f5f3ff;
+      color: #5b21b6;
+      border: 1px solid #ddd6fe;
+    }
+
+    .pc {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .pq {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    /* bottom nav */
+    .bnav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background: var(--s);
+      border-top: 1px solid var(--bd1);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      padding: 8px 8px 20px;
+      z-index: 200;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 6px 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.14s;
+    }
+
+    .nav-item:hover {
+      background: var(--s2);
+    }
+
+    .nav-item.active .nav-ico svg {
+      stroke: var(--p);
+    }
+
+    .nav-item.active .nav-lbl {
+      color: var(--p);
+    }
+
+    .nav-ico {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+    }
+
+    .nav-ico svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--t3);
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .nav-lbl {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--t3);
+    }
+
+    .nav-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+    }
+
+    .nav-fab {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--p);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -18px;
+      border: 3px solid var(--s);
+      box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+      transition: all 0.18s;
+    }
+
+    .nav-fab:hover {
+      background: var(--pd);
+      transform: scale(1.05);
+    }
+
+    .nav-fab svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      stroke-width: 2.2;
+      fill: none;
+      stroke-linecap: round;
+    }
+
+    .nav-center-lbl {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--t3);
+    }
+
+    /* orders page */
+    .orders-page {
+      min-height: 100vh;
+      background: var(--bg);
+      padding-bottom: 88px;
+    }
+
+    .page-head {
+      background: var(--p);
+      padding: 18px 20px 24px;
+    }
+
+    .page-head-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .back-btn svg {
+      width: 15px;
+      height: 15px;
+      stroke: #fff;
+      stroke-width: 2;
+      fill: none;
+      stroke-linecap: round;
+    }
+
+    .page-head h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+
+    .page-head p {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.6);
+      padding-left: 44px;
+    }
+
+    .orders-body {
+      padding: 14px;
+    }
+
+    .oc {
+      background: var(--s);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 10px;
+      box-shadow: var(--sh);
+      border: 1px solid var(--bd1);
+    }
+
+    .oc-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .oc-ico {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid var(--bd1);
+    }
+
+    .oc-ico svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .oc-info {
+      flex: 1;
+    }
+
+    .oc-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--t);
+    }
+
+    .oc-desc {
+      font-size: 0.73rem;
+      color: var(--t2);
+      margin-top: 1px;
+    }
+
+    .oc-right {
+      text-align: right;
+    }
+
+    .oc-amt {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--t);
+      letter-spacing: -0.2px;
+    }
+
+    .oc-date {
+      font-size: 0.68rem;
+      color: var(--t3);
+      margin-top: 2px;
+    }
+
+    .oc-prog {
+      background: var(--s2);
+      border-radius: 9px;
+      padding: 11px 13px;
+      margin-bottom: 12px;
+    }
+
+    .prog-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .prog-bg {
+      height: 3px;
+      background: var(--bd1);
+      border-radius: 2px;
+    }
+
+    .prog-fill {
+      height: 3px;
+      background: var(--p);
+      border-radius: 2px;
+      transition: width 0.4s;
+    }
+
+    .prog-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .prog-lbl {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--t3);
+    }
+
+    .prog-lbl.done {
+      color: var(--p);
+    }
+
+    .oc-acts {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .oa {
+      flex: 1;
+      min-width: 68px;
+      padding: 9px 6px;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.15s;
+    }
+
+    .oa svg {
+      width: 12px;
+      height: 12px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .oa-pay {
+      background: var(--p);
+      color: #fff;
+    }
+
+    .oa-pay:hover {
+      background: var(--pd);
+    }
+
+    .oa-confirm {
+      background: var(--b);
+      color: #fff;
+    }
+
+    .oa-confirm:hover {
+      background: var(--bd);
+    }
+
+    .oa-dispute {
+      background: var(--wl);
+      color: var(--warn);
+      border: 1px solid #fde68a;
+    }
+
+    .oa-refund {
+      background: var(--el);
+      color: var(--err);
+      border: 1px solid #fecaca;
+    }
+
+    .oa-deliver {
+      background: var(--pl);
+      color: var(--p);
+      border: 1px solid #bbf7d0;
+    }
+
+    .oa-hist {
+      background: var(--s2);
+      color: var(--t2);
+      border: 1px solid var(--bd1);
+    }
+
+    /* profile */
+    .profile-page {
+      min-height: 100vh;
+      background: var(--bg);
+      padding-bottom: 88px;
+    }
+
+    .prof-head {
+      background: var(--p);
+      padding: 28px 20px 48px;
+      text-align: center;
+    }
+
+    .prof-avatar {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 auto 12px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .prof-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.2px;
+    }
+
+    .prof-email {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 3px;
+    }
+
+    .prof-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 8px;
+    }
+
+    .prof-content {
+      padding: 14px;
+      margin-top: -16px;
+    }
+
+    .pcard {
+      background: var(--s);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--sh);
+      border: 1px solid var(--bd1);
+      margin-bottom: 10px;
+    }
+
+    .pcard-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--bd1);
+      cursor: pointer;
+      transition: background 0.14s;
+    }
+
+    .pcard-row:last-child {
+      border-bottom: none;
+    }
+
+    .pcard-row:hover {
+      background: var(--s2);
+    }
+
+    .pcard-ico {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .pcard-ico svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .pcard-mid {
+      flex: 1;
+    }
+
+    .pcard-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--t);
+    }
+
+    .pcard-sub {
+      font-size: 0.73rem;
+      color: var(--t2);
+      margin-top: 1px;
+    }
+
+    .pcard-arr svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--t3);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .logout-card {
+      background: var(--s);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--sh);
+      border: 1px solid var(--bd1);
+    }
+
+    .logout-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: background 0.14s;
+    }
+
+    .logout-row:hover {
+      background: var(--el);
+    }
+
+    .logout-row .pcard-title {
+      color: var(--err);
+    }
+
+    /* sheet modal */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 500;
+      backdrop-filter: blur(2px);
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .sheet {
+      background: var(--s);
+      border-radius: 18px 18px 0 0;
+      width: 100%;
+      max-width: 430px;
+      animation: slideUp 0.26s cubic-bezier(0.32, 1, 0.64, 1);
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .sh-drag {
+      width: 34px;
+      height: 4px;
+      background: var(--bd2);
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+
+    .sh-head {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid var(--bd1);
+    }
+
+    .sh-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--t);
+      letter-spacing: -0.2px;
+    }
+
+    .sh-sub {
+      font-size: 0.79rem;
+      color: var(--t2);
+      margin-top: 3px;
+    }
+
+    .sh-body {
+      padding: 18px 20px;
+    }
+
+    .sh-foot {
+      padding: 14px 20px 30px;
+      border-top: 1px solid var(--bd1);
+    }
+
+    .cancel-btn {
+      width: 100%;
+      padding: 12px;
+      background: none;
+      border: none;
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--t2);
+      cursor: pointer;
+      margin-top: 8px;
+      border-radius: 8px;
+      transition: background 0.14s;
+    }
+
+    .cancel-btn:hover {
+      background: var(--s2);
+    }
+
+    /* pay flow */
+    .merchant-block {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--s2);
+      border-radius: 11px;
+      padding: 14px;
+      margin-bottom: 16px;
+      border: 1px solid var(--bd1);
+    }
+
+    .mb-ico {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: var(--pl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(22, 163, 74, 0.2);
+    }
+
+    .mb-ico svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--p);
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+    }
+
+    .mb-name {
+      font-size: 0.93rem;
+      font-weight: 700;
+      color: var(--t);
+    }
+
+    .mb-upi {
+      font-size: 0.73rem;
+      color: var(--t2);
+      margin-top: 2px;
+    }
+
+    .amt-block {
+      text-align: center;
+      background: var(--s2);
+      border-radius: 11px;
+      padding: 20px 16px;
+      margin-bottom: 16px;
+      border: 1px solid var(--bd1);
+    }
+
+    .amt-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--t3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .amt-big {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--t);
+      letter-spacing: -1px;
+    }
+
+    .amt-sub {
+      font-size: 0.75rem;
+      color: var(--t2);
+      margin-top: 4px;
+    }
+
+    .notice {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 11px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .notice-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .notice-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .notice-ico {
+      width: 26px;
+      height: 26px;
+      background: var(--s);
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1px solid #bbf7d0;
+    }
+
+    .notice-ico svg {
+      width: 13px;
+      height: 13px;
+      stroke: var(--p);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .notice-text {
+      font-size: 0.79rem;
+      color: #166534;
+      font-weight: 500;
+      line-height: 1.5;
+      padding-top: 4px;
+    }
+
+    .steps {
+      background: var(--s);
+      border-radius: 11px;
+      padding: 14px;
+      margin-bottom: 16px;
+      border: 1px solid var(--bd1);
+    }
+
+    .step-row {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 7px 0;
+      position: relative;
+    }
+
+    .step-row:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 36px;
+      height: 10px;
+      width: 1.5px;
+      background: var(--bd1);
+    }
+
+    .step-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 1.5px solid;
+    }
+
+    .step-dot svg {
+      width: 11px;
+      height: 11px;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+    }
+
+    .sd-done {
+      background: #f0fdf4;
+      border-color: #86efac;
+    }
+
+    .sd-done svg {
+      stroke: #166534;
+    }
+
+    .sd-active {
+      background: #eff6ff;
+      border-color: #93c5fd;
+    }
+
+    .sd-active svg {
+      stroke: #1e40af;
+    }
+
+    .sd-idle {
+      background: var(--s2);
+      border-color: var(--bd2);
+    }
+
+    .sd-idle svg {
+      stroke: var(--t3);
+    }
+
+    .step-label {
+      font-size: 0.81rem;
+      font-weight: 600;
+      color: var(--t);
+    }
+
+    .step-hint {
+      font-size: 0.71rem;
+      color: var(--t2);
+      margin-top: 1px;
+    }
+
+    /* success */
+    .success-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.97);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 32px;
+    }
+
+    .success-overlay.show {
+      display: flex;
+    }
+
+    .success-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin-bottom: 28px;
+    }
+
+    .success-ring1,
+    .success-ring2 {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid var(--p);
+      opacity: 0;
+      animation: ring 1.6s ease-out infinite;
+    }
+
+    .success-ring2 {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes ring {
+      0% {
+        transform: scale(1);
+        opacity: 0.4;
+      }
+
+      100% {
+        transform: scale(1.6);
+        opacity: 0;
+      }
+    }
+
+    .success-check {
+      position: absolute;
+      inset: 14px;
+      border-radius: 50%;
+      background: var(--p);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .success-check svg {
+      width: 30px;
+      height: 30px;
+      stroke: #fff;
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+    }
+
+    @keyframes pop {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .success-h {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--t);
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+    }
+
+    .success-p {
+      font-size: 0.86rem;
+      color: var(--t2);
+      margin-bottom: 8px;
+    }
+
+    .success-amt {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--p);
+      letter-spacing: -0.5px;
+      margin-bottom: 32px;
+    }
+
+    .done-btn {
+      padding: 14px 52px;
+      background: var(--p);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .done-btn:hover {
+      background: var(--pd);
+    }
+
+    /* misc */
+    .spinner {
+      display: inline-block;
+      width: 15px;
+      height: 15px;
+      border: 2px solid rgba(0, 0, 0, 0.08);
+      border-top-color: var(--p);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+    }
+
+    .sw {
+      border-color: rgba(255, 255, 255, 0.25);
+      border-top-color: #fff;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .empty {
+      text-align: center;
+      padding: 44px 20px;
+      color: var(--t2);
+    }
+
+    .empty svg {
+      width: 44px;
+      height: 44px;
+      stroke: var(--t3);
+      fill: none;
+      stroke-width: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .empty-h {
+      font-size: 0.93rem;
+      font-weight: 600;
+      color: var(--t);
+      margin-bottom: 5px;
+    }
+
+    .empty-s {
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- SUCCESS -->
+  <div class="success-overlay" id="sov">
+    <div class="success-wrap">
+      <div class="success-ring1"></div>
+      <div class="success-ring2"></div>
+      <div class="success-check"><svg viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+        </svg></div>
+    </div>
+    <div class="success-h" id="sh">Payment Successful</div>
+    <div class="success-p" id="sp">Funds secured in escrow</div>
+    <div class="success-amt" id="sa"></div>
+    <button class="done-btn" onclick="hideSuc()">Done</button>
+  </div>
+
+  <!-- SPLASH -->
+  <div id="page-splash" class="page active">
+    <div class="splash">
+      <div class="splash-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"
+          stroke-linejoin="round" width="32" height="32">
+          <rect x="3" y="11" width="18" height="11" rx="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+      </div>
+      <div class="splash-wordmark">Vault<b>ly</b></div>
+      <div class="splash-tag">Secure escrow payments. Pay with confidence, release on delivery.</div>
+      <button class="sb sb-primary" onclick="showPage('page-login')">Sign In</button>
+      <button class="sb sb-ghost" onclick="showPage('page-signup')">Create Account</button>
+      <div class="splash-note">SECURED BY UPI ESCROW PROTOCOL</div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="page-login" class="page">
+    <div class="auth-page">
+      <div class="auth-head">
+        <div class="auth-back" onclick="showPage('page-splash')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="15"
+            height="15">
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
+        </div>
+        <div class="auth-head-brand">Vaultly</div>
+        <h2>Welcome back</h2>
+        <p>Sign in to your account to continue</p>
+      </div>
+      <div class="auth-body">
+        <div id="le" class="err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" width="15" height="15">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg><span id="let"></span></div>
+        <div class="field"><label>Email</label><input type="email" id="le-email" placeholder="you@example.com" /></div>
+        <div class="field"><label>Password</label><input type="password" id="le-pass"
+            placeholder="Enter your password" /></div>
+        <button class="pbtn" id="le-btn" onclick="doLogin()">Sign In</button>
+        <div class="auth-foot">No account? <a onclick="showPage('page-signup')">Create one</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIGNUP -->
+  <div id="page-signup" class="page">
+    <div class="auth-page">
+      <div class="auth-head">
+        <div class="auth-back" onclick="showPage('page-splash')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="15"
+            height="15">
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
+        </div>
+        <div class="auth-head-brand">Vaultly</div>
+        <h2>Create account</h2>
+        <p>Start transacting securely today</p>
+      </div>
+      <div class="auth-body">
+        <div id="se" class="err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" width="15" height="15">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg><span id="set"></span></div>
+        <div class="field"><label>Full Name</label><input type="text" id="se-name" placeholder="Your full name" /></div>
+        <div class="field"><label>Email</label><input type="email" id="se-email" placeholder="you@example.com" /></div>
+        <div class="field"><label>Password</label><input type="password" id="se-pass"
+            placeholder="Minimum 6 characters" /></div>
+        <div class="field">
+          <label>Account Type</label>
+          <div class="role-grid">
+            <div class="rc active" id="rc-c" onclick="setRole('customer')">
+              <div class="rc-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg></div>
+              <div class="rc-name">Customer</div>
+              <div class="rc-hint">Buy with escrow</div>
+            </div>
+            <div class="rc" id="rc-s" onclick="setRole('seller')">
+              <div class="rc-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg></div>
+              <div class="rc-name">Merchant</div>
+              <div class="rc-hint">Sell &amp; deliver</div>
+            </div>
+          </div>
+        </div>
+        <button class="pbtn" id="se-btn" onclick="doSignup()">Create Account</button>
+        <div class="auth-foot">Have an account? <a onclick="showPage('page-login')">Sign in</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div id="page-home" class="page">
+    <div class="home-page">
+      <div class="topbar">
+        <div class="wordmark">Vault<b>ly</b></div>
+        <div class="topbar-right">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+          </div>
+          <div class="avatar-circle" id="h-av" onclick="goView('profile')">--</div>
+        </div>
+      </div>
+      <div class="user-hero">
+        <div class="user-hero-avatar" id="h-hero-av">--</div>
+        <div>
+          <div class="user-hero-greet">Good day,</div>
+          <div class="user-hero-name" id="h-name">Loading...</div>
+          <div class="role-tag" id="h-role">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+              <circle cx="9" cy="21" r="1" />
+              <circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            Customer
+          </div>
+        </div>
+      </div>
+      <div class="stats-card">
+        <div class="sc-label">Total Orders</div>
+        <div class="sc-val" id="sc-total">0</div>
+        <div class="sc-grid">
+          <div class="sc-chip">
+            <div class="sc-chip-label">Completed</div>
+            <div class="sc-chip-val" id="sc-done">0</div>
+          </div>
+          <div class="sc-chip">
+            <div class="sc-chip-label">In Escrow</div>
+            <div class="sc-chip-val esc" id="sc-escrow">Rs.0</div>
+          </div>
+          <div class="sc-chip">
+            <div class="sc-chip-label">Disputed</div>
+            <div class="sc-chip-val" id="sc-disp">0</div>
+          </div>
+        </div>
+      </div>
+      <div class="qa-section">
+        <div class="qa-label">Quick Actions</div>
+        <div class="qa-grid" id="qa-grid"></div>
+      </div>
+      <div class="recent-section">
+        <div class="sec-row">
+          <div class="sec-title">Recent Activity</div>
+          <button class="sec-link" onclick="goView('orders')">View all</button>
+        </div>
+        <div class="tx-card" id="recent-list">
+          <div class="empty"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <div style="height:12px"></div>
+    </div>
+    <div class="bnav">
+      <button class="nav-item active" id="ni-home" onclick="goView('home')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg></div>
+        <div class="nav-lbl">Home</div>
+      </button>
+      <button class="nav-item" id="ni-orders" onclick="goView('orders')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg></div>
+        <div class="nav-lbl">Orders</div>
+      </button>
+      <div class="nav-center" onclick="openNewOrder()">
+        <div class="nav-fab"><svg viewBox="0 0 24 24">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg></div>
+        <div class="nav-center-lbl">Pay</div>
+      </div>
+      <button class="nav-item" onclick="goView('orders')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg></div>
+        <div class="nav-lbl">Activity</div>
+      </button>
+      <button class="nav-item" id="ni-profile" onclick="goView('profile')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg></div>
+        <div class="nav-lbl">Profile</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ORDERS -->
+  <div id="page-orders" class="page">
+    <div class="orders-page">
+      <div class="page-head">
+        <div class="page-head-row">
+          <div class="back-btn" onclick="goView('home')"><svg viewBox="0 0 24 24">
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg></div>
+          <h1>My Orders</h1>
+        </div>
+        <p>Escrow-protected payments</p>
+      </div>
+      <div class="orders-body" id="orders-body">
+        <div class="empty"><span class="spinner"></span></div>
+      </div>
+    </div>
+    <div class="bnav">
+      <button class="nav-item" onclick="goView('home')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg></div>
+        <div class="nav-lbl">Home</div>
+      </button>
+      <button class="nav-item active">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg></div>
+        <div class="nav-lbl">Orders</div>
+      </button>
+      <div class="nav-center" onclick="openNewOrder()">
+        <div class="nav-fab"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"
+            stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg></div>
+        <div class="nav-center-lbl">Pay</div>
+      </div>
+      <button class="nav-item" onclick="goView('orders')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg></div>
+        <div class="nav-lbl">Activity</div>
+      </button>
+      <button class="nav-item" onclick="goView('profile')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg></div>
+        <div class="nav-lbl">Profile</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="page-profile" class="page">
+    <div class="profile-page">
+      <div class="prof-head">
+        <div class="prof-avatar" id="p-av">--</div>
+        <div class="prof-name" id="p-name">Loading...</div>
+        <div class="prof-email" id="p-email">...</div>
+        <div class="prof-badge" id="p-badge">Customer Account</div>
+      </div>
+      <div class="prof-content">
+        <div class="pcard">
+          <div class="pcard-row" onclick="goView('orders')">
+            <div class="pcard-ico" style="background:#eff6ff"><svg viewBox="0 0 24 24" stroke="#1d4ed8" fill="none"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+              </svg></div>
+            <div class="pcard-mid">
+              <div class="pcard-title">My Orders</div>
+              <div class="pcard-sub">View all orders</div>
+            </div>
+            <div class="pcard-arr"><svg viewBox="0 0 24 24">
+                <polyline points="9 18 15 12 9 6" />
+              </svg></div>
+          </div>
+          <div class="pcard-row" onclick="goView('orders')">
+            <div class="pcard-ico" style="background:#fffbeb"><svg viewBox="0 0 24 24" stroke="#d97706" fill="none"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg></div>
+            <div class="pcard-mid">
+              <div class="pcard-title">Escrow Payments</div>
+              <div class="pcard-sub">Track locked funds</div>
+            </div>
+            <div class="pcard-arr"><svg viewBox="0 0 24 24">
+                <polyline points="9 18 15 12 9 6" />
+              </svg></div>
+          </div>
+          <div class="pcard-row" onclick="goView('orders')">
+            <div class="pcard-ico" style="background:#f0fdf4"><svg viewBox="0 0 24 24" stroke="#16a34a" fill="none"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg></div>
+            <div class="pcard-mid">
+              <div class="pcard-title">Transaction History</div>
+              <div class="pcard-sub">All past payments</div>
+            </div>
+            <div class="pcard-arr"><svg viewBox="0 0 24 24">
+                <polyline points="9 18 15 12 9 6" />
+              </svg></div>
+          </div>
+        </div>
+        <div class="logout-card">
+          <div class="logout-row" onclick="doLogout()">
+            <div class="pcard-ico" style="background:#fef2f2"><svg viewBox="0 0 24 24" stroke="#dc2626" fill="none"
+                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="17" height="17">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg></div>
+            <div class="pcard-mid">
+              <div class="pcard-title">Sign Out</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bnav">
+      <button class="nav-item" onclick="goView('home')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg></div>
+        <div class="nav-lbl">Home</div>
+      </button>
+      <button class="nav-item" onclick="goView('orders')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg></div>
+        <div class="nav-lbl">Orders</div>
+      </button>
+      <div class="nav-center" onclick="openNewOrder()">
+        <div class="nav-fab"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"
+            stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg></div>
+        <div class="nav-center-lbl">Pay</div>
+      </div>
+      <button class="nav-item" onclick="goView('orders')">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg></div>
+        <div class="nav-lbl">Activity</div>
+      </button>
+      <button class="nav-item active">
+        <div class="nav-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg></div>
+        <div class="nav-lbl">Profile</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL: New Order -->
+  <div class="overlay" id="m-new">
+    <div class="sheet">
+      <div class="sh-drag"></div>
+      <div class="sh-head">
+        <div class="sh-title">Send Money</div>
+        <div class="sh-sub">Secure payment with escrow protection</div>
+      </div>
+      <div class="sh-body">
+        <div id="no-err" class="err"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" width="15" height="15">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+          </svg><span id="no-et"></span></div>
+        <div class="field"><label>Pay To</label><select id="no-sel">
+            <option value="">Select merchant...</option>
+          </select></div>
+        <div class="field"><label>Amount (Rs.)</label><input type="number" id="no-amt" placeholder="0.00" min="1"
+            step="0.01" /></div>
+        <div class="field"><label>Remark</label><input type="text" id="no-rem" placeholder="e.g. Laptop delivery..." />
+        </div>
+        <div class="notice">
+          <div class="notice-row">
+            <div class="notice-ico"><svg viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg></div>
+            <div class="notice-text">Funds held in escrow until you confirm receipt</div>
+          </div>
+          <div class="notice-row">
+            <div class="notice-ico"><svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></div>
+            <div class="notice-text">Release only when satisfied with delivery</div>
+          </div>
+          <div class="notice-row">
+            <div class="notice-ico"><svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg></div>
+            <div class="notice-text">Raise a dispute if any issue arises</div>
+          </div>
+        </div>
+      </div>
+      <div class="sh-foot">
+        <button class="pbtn" id="no-btn" onclick="submitOrder()">Continue</button>
+        <button class="cancel-btn" onclick="closeM('m-new')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Pay -->
+  <div class="overlay" id="m-pay">
+    <div class="sheet">
+      <div class="sh-drag"></div>
+      <div class="sh-head">
+        <div class="sh-title">Confirm Payment</div>
+        <div class="sh-sub">Review before proceeding</div>
+      </div>
+      <div class="sh-body">
+        <div class="merchant-block">
+          <div class="mb-ico"><svg viewBox="0 0 24 24">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg></div>
+          <div>
+            <div class="mb-name" id="pay-name">Merchant</div>
+            <div class="mb-upi" id="pay-upi">merchant@vaultly</div>
+          </div>
+        </div>
+        <div class="amt-block">
+          <div class="amt-label">Amount to lock in escrow</div>
+          <div class="amt-big" id="pay-amt">Rs.0</div>
+          <div class="amt-sub">Released only after your confirmation</div>
+        </div>
+        <div class="steps">
+          <div class="step-row">
+            <div class="step-dot sd-active"><svg viewBox="0 0 24 24">
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg></div>
+            <div>
+              <div class="step-label">Pay to escrow</div>
+              <div class="step-hint">Funds locked securely</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-dot sd-idle"><svg viewBox="0 0 24 24">
+                <rect x="1" y="3" width="15" height="13" />
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                <circle cx="5.5" cy="18.5" r="2.5" />
+                <circle cx="18.5" cy="18.5" r="2.5" />
+              </svg></div>
+            <div>
+              <div class="step-label">Merchant delivers</div>
+              <div class="step-hint">You receive your order</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-dot sd-idle"><svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></div>
+            <div>
+              <div class="step-label">You confirm receipt</div>
+              <div class="step-hint">Funds released</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sh-foot">
+        <button class="pbtn" id="pay-btn" onclick="confirmPay()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" width="15"
+            height="15">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          Pay and Lock in Escrow
+        </button>
+        <button class="cancel-btn" onclick="closeM('m-pay')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Confirm -->
+  <div class="overlay" id="m-confirm">
+    <div class="sheet">
+      <div class="sh-drag"></div>
+      <div class="sh-head">
+        <div class="sh-title">Confirm Receipt</div>
+        <div class="sh-sub">Did you receive your order?</div>
+      </div>
+      <div class="sh-body">
+        <div class="amt-block">
+          <div class="amt-label">Releasing to merchant</div>
+          <div class="amt-big" id="conf-amt">Rs.0</div>
+          <div class="amt-sub">This action cannot be undone</div>
+        </div>
+        <div class="steps">
+          <div class="step-row">
+            <div class="step-dot sd-done"><svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></div>
+            <div>
+              <div class="step-label">Paid to escrow</div>
+              <div class="step-hint">Funds were locked</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-dot sd-done"><svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12" />
+              </svg></div>
+            <div>
+              <div class="step-label">Merchant delivered</div>
+              <div class="step-hint">Order marked delivered</div>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-dot sd-active"><svg viewBox="0 0 24 24">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg></div>
+            <div>
+              <div class="step-label">Your confirmation</div>
+              <div class="step-hint">Releases funds to merchant</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sh-foot">
+        <button class="pbtn blue" id="conf-btn" onclick="confirmDelivery()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" width="15"
+            height="15">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+          Yes, Release Payment
+        </button>
+        <button class="cancel-btn" onclick="closeM('m-confirm')">Not yet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: History -->
+  <div class="overlay" id="m-hist">
+    <div class="sheet">
+      <div class="sh-drag"></div>
+      <div class="sh-head">
+        <div class="sh-title">Transaction Timeline</div>
+        <div class="sh-sub" id="hist-sub">Order history</div>
+      </div>
+      <div class="sh-body" id="hist-body"></div>
+      <div class="sh-foot"><button class="pbtn" style="background:var(--s2);color:var(--t)"
+          onclick="closeM('m-hist')">Close</button></div>
+    </div>
+  </div>
+
+  <script>
+    var BASE = 'http://localhost:8000';
+    var U = null, role = 'customer', V = 'home', pId = null, pAmt = 0;
+    var G = function (id) { return document.getElementById(id); };
+    var fmt = function (n) { return 'Rs.' + parseFloat(n).toLocaleString('en-IN', { minimumFractionDigits: 2 }); };
+    var fmtD = function (d) { return new Date(d).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }); };
+    var ini = function (n) { return n.split(' ').map(function (w) { return w[0]; }).join('').toUpperCase().slice(0, 2); };
+
+    function showPage(id) { document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); }); G(id).classList.add('active'); }
+    function openM(id) { G(id).classList.add('open'); }
+    function closeM(id) { G(id).classList.remove('open'); }
+
+    function showErr(eid, tid, msg) { G(tid).textContent = msg; G(eid).className = 'err show'; setTimeout(function () { G(eid).classList.remove('show'); }, 5000); }
+    function setBtn(id, on, html) { var b = G(id); if (!b) return; b.disabled = on; if (html !== undefined) b.innerHTML = html; }
+
+    function showSuc(h, p, a) { G('sh').textContent = h; G('sp').textContent = p; G('sa').textContent = a || ''; G('sov').classList.add('show'); setTimeout(hideSuc, 3500); }
+    function hideSuc() { G('sov').classList.remove('show'); loadV(V); }
+
+    function gT() { return localStorage.getItem('vt'); }
+    function sT(t) { localStorage.setItem('vt', t); }
+    function gU() { try { return JSON.parse(localStorage.getItem('vu')); } catch (e) { return null; } }
+    function sU(u) { localStorage.setItem('vu', JSON.stringify(u)); }
+
+    function api(path, opts) {
+      opts = opts || {};
+      var h = { 'Content-Type': 'application/json' };
+      var t = gT(); if (t) h['Authorization'] = 'Bearer ' + t;
+      return fetch(BASE + path, Object.assign({}, opts, { headers: h })).then(function (r) {
+        return r.json().then(function (d) { if (!r.ok) throw new Error(d.detail || 'HTTP ' + r.status); return d; });
+      });
+    }
+
+    function setRole(r) { role = r; G('rc-c').className = 'rc' + (r === 'customer' ? ' active' : ''); G('rc-s').className = 'rc' + (r === 'seller' ? ' active' : ''); }
+
+    function doLogin() {
+      var email = G('le-email').value.trim(), pass = G('le-pass').value;
+      if (!email || !pass) return showErr('le', 'let', 'Please fill in all fields.');
+      setBtn('le-btn', true, '<span class="spinner sw"></span> Signing in...');
+      api('/auth/login', { method: 'POST', body: JSON.stringify({ email: email, password: pass }) })
+        .then(function (d) { sT(d.access_token); sU(d.user); U = d.user; initHome(); })
+        .catch(function (e) { showErr('le', 'let', e.message); })
+        .finally(function () { setBtn('le-btn', false, 'Sign In'); });
+    }
+
+    function doSignup() {
+      var name = G('se-name').value.trim(), email = G('se-email').value.trim(), pass = G('se-pass').value;
+      if (!name || !email || !pass) return showErr('se', 'set', 'Please fill in all fields.');
+      if (pass.length < 6) return showErr('se', 'set', 'Password must be at least 6 characters.');
+      setBtn('se-btn', true, '<span class="spinner sw"></span> Creating...');
+      api('/auth/signup', { method: 'POST', body: JSON.stringify({ name: name, email: email, password: pass, role: role }) })
+        .then(function (d) { sT(d.access_token); sU(d.user); U = d.user; initHome(); })
+        .catch(function (e) { showErr('se', 'set', e.message); })
+        .finally(function () { setBtn('se-btn', false, 'Create Account'); });
+    }
+
+    function doLogout() { localStorage.removeItem('vt'); localStorage.removeItem('vu'); U = null; showPage('page-splash'); }
+
+    function initHome() {
+      showPage('page-home');
+      var av = ini(U.name);
+      G('h-av').textContent = av; G('h-hero-av').textContent = av; G('h-name').textContent = U.name;
+      G('p-av').textContent = av; G('p-name').textContent = U.name; G('p-email').textContent = U.email;
+      var isC = U.role === 'customer';
+      G('p-badge').textContent = isC ? 'Customer Account' : 'Merchant Account';
+      G('h-role').innerHTML = (isC
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Buyer'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="10" height="10" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Merchant');
+      buildQA(); loadV('home');
+    }
+
+    var QA_ICONS = {
+      pay: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+      orders: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>',
+      escrow: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      dispute: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      deliver: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+      history: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+      help: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      profile: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+    };
+    var QA_COLORS = { pay: '#dcfce7', orders: '#dbeafe', escrow: '#fef3c7', dispute: '#fee2e2', deliver: '#dcfce7', history: '#ede9fe', help: '#dbeafe', profile: '#fef3c7' };
+    var QA_STROKE = { pay: '#16a34a', orders: '#1d4ed8', escrow: '#d97706', dispute: '#dc2626', deliver: '#16a34a', history: '#7c3aed', help: '#1d4ed8', profile: '#d97706' };
+
+    function buildQA() {
+      var isC = U.role === 'customer';
+      var items = isC
+        ? [{ k: 'pay', l: 'Pay Now', f: 'openNewOrder()' }, { k: 'orders', l: 'Orders', f: 'goView(\'orders\')' }, { k: 'escrow', l: 'Escrow', f: 'goView(\'orders\')' }, { k: 'dispute', l: 'Disputes', f: 'goView(\'orders\')' }, { k: 'history', l: 'History', f: 'goView(\'orders\')' }, { k: 'deliver', l: 'Track', f: 'goView(\'orders\')' }, { k: 'help', l: 'Help', f: '' }, { k: 'profile', l: 'Profile', f: 'goView(\'profile\')' }]
+        : [{ k: 'orders', l: 'Orders', f: 'goView(\'orders\')' }, { k: 'deliver', l: 'Deliver', f: 'goView(\'orders\')' }, { k: 'escrow', l: 'Escrow', f: 'goView(\'orders\')' }, { k: 'history', l: 'Activity', f: 'goView(\'orders\')' }, { k: 'dispute', l: 'Disputes', f: 'goView(\'orders\')' }, { k: 'profile', l: 'Profile', f: 'goView(\'profile\')' }, { k: 'help', l: 'Help', f: '' }, { k: 'orders', l: 'History', f: 'goView(\'orders\')' }];
+      G('qa-grid').innerHTML = items.map(function (a) {
+        var ico = QA_ICONS[a.k].replace('stroke-width', 'stroke="' + QA_STROKE[a.k] + '" stroke-width');
+        return '<button class="qa-btn" onclick="' + a.f + '"><div class="qa-icon" style="background:' + QA_COLORS[a.k] + '">' + ico + '</div><div class="qa-name">' + a.l + '</div></button>';
+      }).join('');
+    }
+
+    function goView(v) {
+      V = v;
+      if (v === 'home') { showPage('page-home'); loadV('home'); }
+      else if (v === 'orders') { showPage('page-orders'); loadOrders(); }
+      else if (v === 'profile') { showPage('page-profile'); }
+    }
+
+    function loadV(v) { if (v === 'home') loadHome(); }
+
+    function sM(s) { var m = { pending: { bg: '#fffbeb', sc: '#92400e', pill: 'pp', ac: 'lock' }, in_escrow: { bg: '#eff6ff', sc: '#1e40af', pill: 'pi', ac: 'lock' }, delivered: { bg: '#f5f3ff', sc: '#5b21b6', pill: 'pd', ac: 'lock' }, completed: { bg: '#f0fdf4', sc: '#166534', pill: 'pc', ac: 'inp' }, disputed: { bg: '#fef2f2', sc: '#991b1b', pill: 'pq', ac: 'out' } }; return m[s] || m.pending; }
+    function sI(s) { var m = { pending: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>', in_escrow: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>', delivered: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>', completed: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>', disputed: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg>' }; return m[s] || m.pending; }
+
+    function loadHome() {
+      api('/orders/analytics').then(function (s) { G('sc-total').textContent = s.total_orders; G('sc-done').textContent = s.completed_orders; G('sc-escrow').textContent = fmt(s.total_escrow_held); G('sc-disp').textContent = s.disputed_orders; }).catch(function () { });
+      api('/orders').then(function (orders) {
+        var r = orders.slice(0, 5), isC = U.role === 'customer';
+        if (!r.length) { G('recent-list').innerHTML = '<div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div class="empty-h">No transactions yet</div><div class="empty-s">' + (isC ? 'Tap Pay to get started' : 'Waiting for orders') + '</div></div>'; return; }
+        G('recent-list').innerHTML = r.map(function (o) { var m = sM(o.status), ic = sI(o.status).replace('stroke-width', 'stroke="' + m.sc + '" stroke-width'); var name = isC ? (o.seller_name || 'Merchant') : (o.customer_name || 'Customer'); return '<div class="tx-row" onclick="openHist(\'' + o.id + '\')"><div class="tx-ico" style="background:' + m.bg + '">' + ic + '</div><div class="tx-mid"><div class="tx-name">' + name + '</div><div class="tx-desc">' + (o.description || 'Payment') + '</div></div><div class="tx-end"><div class="tx-amt ' + m.ac + '">' + (isC ? '-' : '+') + fmt(o.amount) + '</div><div class="tx-pill"><span class="pill ' + m.pill + '">' + o.status.replace('_', ' ') + '</span></div></div></div>'; }).join('');
+      }).catch(function (e) { G('recent-list').innerHTML = '<div class="empty"><div class="empty-s">' + e.message + '</div></div>'; });
+    }
+
+    function gP(s) { var m = { pending: { p: 5, n: 0 }, in_escrow: { p: 33, n: 1 }, delivered: { p: 66, n: 2 }, completed: { p: 100, n: 3 }, disputed: { p: 33, n: 1 } }; return m[s] || { p: 0, n: 0 }; }
+
+    function loadOrders() {
+      G('orders-body').innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+      api('/orders').then(function (orders) {
+        var isC = U.role === 'customer';
+        if (!orders.length) { G('orders-body').innerHTML = '<div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div class="empty-h">No orders yet</div><div class="empty-s">' + (isC ? 'Tap Pay to create your first order' : 'Waiting for orders') + '</div></div>'; return; }
+        G('orders-body').innerHTML = orders.map(function (o) {
+          var m = sM(o.status), prog = gP(o.status), ic = sI(o.status).replace('stroke-width', 'stroke="' + m.sc + '" stroke-width');
+          var name = isC ? (o.seller_name || 'Merchant') : (o.customer_name || 'Customer');
+          var acts = bActs(o);
+          return '<div class="oc"><div class="oc-top"><div class="oc-ico" style="background:' + m.bg + '">' + ic + '</div><div class="oc-info"><div class="oc-name">' + name + '</div><div class="oc-desc">' + (o.description || 'Payment') + '</div></div><div class="oc-right"><div class="oc-amt">' + fmt(o.amount) + '</div><div class="oc-date">' + fmtD(o.created_at) + '</div></div></div><div class="oc-prog"><div class="prog-row"><span class="pill ' + m.pill + '">' + o.status.replace('_', ' ') + '</span><span style="font-size:0.68rem;color:var(--t3)">Step ' + prog.n + ' / 3</span></div><div class="prog-bg"><div class="prog-fill" style="width:' + prog.p + '%"></div></div><div class="prog-labels"><span class="prog-lbl' + (prog.n >= 1 ? ' done' : '') + '">Paid</span><span class="prog-lbl' + (prog.n >= 2 ? ' done' : '') + '">Delivered</span><span class="prog-lbl' + (prog.n >= 3 ? ' done' : '') + '">Confirmed</span></div></div>' + (acts ? '<div class="oc-acts">' + acts + '</div>' : '') + '</div>';
+        }).join('');
+      }).catch(function (e) { G('orders-body').innerHTML = '<div class="empty"><div class="empty-s">' + e.message + '</div></div>'; });
+    }
+
+    function bActs(o) {
+      var b = [], id = o.id;
+      var lockIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+      var checkIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="12" height="12"><polyline points="20 6 9 17 4 12"/></svg>';
+      var warnIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>';
+      var refIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.6"/></svg>';
+      var truckIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>';
+      var histIco = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="12" height="12"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>';
+      if (U.role === 'customer') {
+        if (o.status === 'pending') b.push('<button class="oa oa-pay" onclick="openPay(\'' + id + '\',' + o.amount + ',\'' + (o.seller_name || 'Merchant').replace(/'/g, "\\'") + '\')">' + lockIco + 'Pay to Escrow</button>');
+        if (o.status === 'delivered') b.push('<button class="oa oa-confirm" onclick="openConf(\'' + id + '\',' + o.amount + ')">' + checkIco + 'Confirm Receipt</button>');
+        if (o.status === 'in_escrow' || o.status === 'delivered') b.push('<button class="oa oa-dispute" onclick="doDispute(\'' + id + '\')">' + warnIco + 'Dispute</button>');
+        if (o.status === 'disputed') b.push('<button class="oa oa-refund" onclick="doRefund(\'' + id + '\')">' + refIco + 'Refund</button>');
+      }
+      if (U.role === 'seller' && o.status === 'in_escrow') b.push('<button class="oa oa-deliver" onclick="doDeliver(\'' + id + '\')">' + truckIco + 'Mark Delivered</button>');
+      b.push('<button class="oa oa-hist" onclick="openHist(\'' + id + '\')">' + histIco + 'History</button>');
+      return b.join('');
+    }
+
+    function openNewOrder() {
+      if (U.role === 'seller') { alert('Merchants cannot create orders. Please use a customer account.'); return; }
+      G('no-sel').innerHTML = '<option value="">Loading merchants...</option>'; G('no-amt').value = ''; G('no-rem').value = '';
+      openM('m-new');
+      api('/auth/sellers').then(function (s) { G('no-sel').innerHTML = s.length ? s.map(function (m) { return '<option value="' + m.id + '">' + m.name + '</option>'; }).join('') : '<option value="">No merchants available</option>'; }).catch(function () { G('no-sel').innerHTML = '<option value="">Failed to load</option>'; });
+    }
+
+    function submitOrder() {
+      var sid = G('no-sel').value, amt = parseFloat(G('no-amt').value), rem = G('no-rem').value.trim();
+      if (!sid) { G('no-et').textContent = 'Please select a merchant.'; G('no-err').className = 'err show'; return; }
+      if (!amt || amt <= 0) { G('no-et').textContent = 'Enter a valid amount.'; G('no-err').className = 'err show'; return; }
+      setBtn('no-btn', true, '<span class="spinner sw"></span> Creating...');
+      api('/orders', { method: 'POST', body: JSON.stringify({ seller_id: sid, amount: amt, description: rem }) })
+        .then(function (o) { closeM('m-new'); var sel = G('no-sel'); openPay(o.id, o.amount, sel.options[sel.selectedIndex].text); })
+        .catch(function (e) { G('no-et').textContent = e.message; G('no-err').className = 'err show'; })
+        .finally(function () { setBtn('no-btn', false, 'Continue'); });
+    }
+
+    function openPay(id, amt, name) {
+      pId = id; pAmt = amt;
+      G('pay-name').textContent = name || 'Merchant';
+      G('pay-upi').textContent = (name || 'merchant').toLowerCase().replace(/\s+/g, '') + '@vaultly';
+      G('pay-amt').textContent = fmt(amt);
+      openM('m-pay');
+    }
+
+    function confirmPay() {
+      setBtn('pay-btn', true, '<span class="spinner sw"></span> Processing...');
+      api('/escrow/deposit', { method: 'POST', body: JSON.stringify({ order_id: pId }) })
+        .then(function () { closeM('m-pay'); showSuc('Payment Locked', 'Funds secured in escrow', fmt(pAmt)); })
+        .catch(function (e) { alert('Error: ' + e.message); })
+        .finally(function () { setBtn('pay-btn', false, 'Pay and Lock in Escrow'); });
+    }
+
+    function openConf(id, amt) { pId = id; pAmt = amt; G('conf-amt').textContent = fmt(amt); openM('m-confirm'); }
+
+    function confirmDelivery() {
+      setBtn('conf-btn', true, '<span class="spinner sw"></span> Releasing...');
+      api('/escrow/release', { method: 'POST', body: JSON.stringify({ order_id: pId }) })
+        .then(function () { closeM('m-confirm'); showSuc('Payment Released', fmt(pAmt) + ' sent to merchant', ''); })
+        .catch(function (e) { alert('Error: ' + e.message); })
+        .finally(function () { setBtn('conf-btn', false, 'Yes, Release Payment'); });
+    }
+
+    function doDeliver(id) {
+      if (!confirm('Mark this order as delivered?')) return;
+      api('/orders/' + id + '/deliver', { method: 'POST' }).then(function () { showSuc('Delivery Confirmed', 'Awaiting customer confirmation', ''); }).catch(function (e) { alert('Error: ' + e.message); });
+    }
+    function doDispute(id) {
+      if (!confirm('Raise a dispute? Funds remain locked until resolved.')) return;
+      api('/escrow/dispute', { method: 'POST', body: JSON.stringify({ order_id: id }) }).then(function () { showSuc('Dispute Raised', 'Funds held until resolved', ''); }).catch(function (e) { alert('Error: ' + e.message); });
+    }
+    function doRefund(id) {
+      if (!confirm('Request a refund?')) return;
+      api('/escrow/refund', { method: 'POST', body: JSON.stringify({ order_id: id }) }).then(function () { showSuc('Refund Initiated', 'Funds will be returned to you', ''); }).catch(function (e) { alert('Error: ' + e.message); });
+    }
+
+    function openHist(id) {
+      G('hist-sub').textContent = 'Order: ' + id.slice(0, 8) + '...';
+      G('hist-body').innerHTML = '<div class="empty"><span class="spinner"></span></div>';
+      openM('m-hist');
+      api('/escrow/transactions/' + id).then(function (txs) {
+        if (!txs.length) { G('hist-body').innerHTML = '<div class="empty"><div class="empty-s">No transactions recorded yet</div></div>'; return; }
+        var ic = { deposit: '<svg viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>', release: '<svg viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>', refund: '<svg viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.6"/></svg>' };
+        var bg = { deposit: '#f0fdf4', release: '#eff6ff', refund: '#fef2f2' };
+        G('hist-body').innerHTML = '<div class="tx-card">' + txs.map(function (t) { return '<div class="tx-row"><div class="tx-ico" style="background:' + (bg[t.type] || '#f5f5f5') + '">' + (ic[t.type] || '') + '</div><div class="tx-mid"><div class="tx-name">' + t.type.charAt(0).toUpperCase() + t.type.slice(1) + '</div><div class="tx-desc">' + (t.note || '') + ' · ' + fmtD(t.timestamp) + '</div></div><div class="tx-end"><div class="tx-amt inp">' + fmt(t.amount) + '</div></div></div>'; }).join('') + '</div>';
+      }).catch(function (e) { G('hist-body').innerHTML = '<div class="empty"><div class="empty-s">' + e.message + '</div></div>'; });
+    }
+
+    (function boot() {
+      var t = gT(), u = gU();
+      if (t && u) { U = u; initHome(); } else showPage('page-splash');
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          if (G('page-login').classList.contains('active')) doLogin();
+          if (G('page-signup').classList.contains('active')) doSignup();
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>
