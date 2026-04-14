@@ -1,0 +1,212 @@
+{
+  "info": {
+    "name": "EscrowPay API",
+    "description": "Complete API collection for the Escrow Payment System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "BASE_URL", "value": "http://localhost:8000" },
+    { "key": "TOKEN",    "value": "" },
+    { "key": "ORDER_ID", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "1. Signup - Customer",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{BASE_URL}}/auth/signup",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alice Customer\",\n  \"email\": \"alice@example.com\",\n  \"password\": \"secret123\",\n  \"role\": \"customer\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Signup - Seller",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{BASE_URL}}/auth/signup",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bob Seller\",\n  \"email\": \"bob@example.com\",\n  \"password\": \"secret123\",\n  \"role\": \"seller\"\n}"
+            }
+          }
+        },
+        {
+          "name": "3. Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.collectionVariables.set('TOKEN', pm.response.json().access_token);"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{BASE_URL}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice@example.com\",\n  \"password\": \"secret123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "4. Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "url": "{{BASE_URL}}/auth/me"
+          }
+        },
+        {
+          "name": "5. List Sellers",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "url": "{{BASE_URL}}/auth/sellers"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "1. Create Order (customer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.collectionVariables.set('ORDER_ID', pm.response.json().id);"]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "url": "{{BASE_URL}}/orders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seller_id\": \"SELLER_UUID_HERE\",\n  \"amount\": 1500.00,\n  \"description\": \"Electronics delivery\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. List My Orders",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "url": "{{BASE_URL}}/orders"
+          }
+        },
+        {
+          "name": "3. Get Order by ID",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "url": "{{BASE_URL}}/orders/{{ORDER_ID}}"
+          }
+        },
+        {
+          "name": "4. Mark Delivered (seller token)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "url": "{{BASE_URL}}/orders/{{ORDER_ID}}/deliver"
+          }
+        },
+        {
+          "name": "5. Dashboard Analytics",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "url": "{{BASE_URL}}/orders/analytics"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escrow",
+      "item": [
+        {
+          "name": "1. Deposit to Escrow",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "url": "{{BASE_URL}}/escrow/deposit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": \"{{ORDER_ID}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "2. Release Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "url": "{{BASE_URL}}/escrow/release",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": \"{{ORDER_ID}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "3. Raise Dispute",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "url": "{{BASE_URL}}/escrow/dispute",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": \"{{ORDER_ID}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "4. Request Refund",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{TOKEN}}"}
+            ],
+            "url": "{{BASE_URL}}/escrow/refund",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": \"{{ORDER_ID}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "5. Transaction History",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{TOKEN}}"}],
+            "url": "{{BASE_URL}}/escrow/transactions/{{ORDER_ID}}"
+          }
+        }
+      ]
+    }
+  ]
+}
